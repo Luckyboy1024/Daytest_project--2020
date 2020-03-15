@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include "Contact.h"
+
 void InitContacts(Contacts *pCon)
 {
 	//通讯录初始化: 数组，usedsize
@@ -9,6 +10,7 @@ void InitContacts(Contacts *pCon)
 	memset(pCon->per, 0, sizeof(pCon->per));    //string.h 对数组初始化
 	//这里memset()如果pCon->per的容量已确定即定义时直接定义为数组，才可以
 }
+
 // 添加一个人到通讯录
 void AddContacts(Contacts *pCon)
 {
@@ -32,6 +34,7 @@ void AddContacts(Contacts *pCon)
 	++pCon->usedsize;
 	printf("Adding successfully\n");
 }
+
 // 根据姓名查找通讯录，找到：返回下标；找不到：返回-1
 int SearchContacts(Contacts *pCon)
 {
@@ -52,6 +55,7 @@ int SearchContacts(Contacts *pCon)
 	}
 	return -1;
 }
+
 void DelContacts(Contacts *pCon)
 {
 	int index = SearchContacts(pCon);//  代码复用
@@ -74,18 +78,18 @@ void DelContacts(Contacts *pCon)
 // 显示打印
 void PrintShowContacts(Contacts *pCon, int i)
 {
-	printf("%-20s", pCon->per[i]._name);   // 姓名
-	printf("%-10s", pCon->per[i]._sex);    // 性别
-	printf("%-10d", pCon->per[i]._age);    // 年龄
-	printf("%-11s", pCon->per[i]._tele);   // 电话
-	printf("%-15s", pCon->per[i]._addr);   // 地址
+	printf("\n--> %-20s ", pCon->per[i]._name);   // 姓名
+	printf("%-10s ", pCon->per[i]._sex);    // 性别
+	printf("%-10d ", pCon->per[i]._age);    // 年龄
+	printf("%-11s ", pCon->per[i]._tele);   // 电话
+	printf("%-15s ", pCon->per[i]._addr);   // 地址
 	printf("\n");
 }
 
 // 显示
 void ShowContacts(Contacts *pCon)
 {
-	printf("%-20s %-10s %-10s %-11s  %-15s\n", "姓名", "性别", "年龄", "电话", "地址");
+	printf("# # %-20s %-10s %-10s %-11s %-15s\n", "姓名", "性别", "年龄", "电话", "地址");
 	if (0 == pCon->usedsize)
 	{
 		printf("sorry, Contacts is  empty\n");   //通讯录为空
@@ -98,6 +102,7 @@ void ShowContacts(Contacts *pCon)
 		}
 	}
 }
+
 // 清空
 void ClearContacts(Contacts *pCon)
 {

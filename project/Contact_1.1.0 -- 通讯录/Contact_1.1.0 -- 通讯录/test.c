@@ -14,6 +14,7 @@ void menu()
 	printf("  0.   exit          \n");
 	printf("---------------------\n");
 }
+
 void start()
 {
 	int input = 0;             //½ÓÊÕÊä³ö
@@ -48,6 +49,7 @@ void start()
 		}
 	} while (input);
 }
+
 int main()
 {
 	start();
