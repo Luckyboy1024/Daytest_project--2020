@@ -1,19 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include "Contact.h"
-void InitContacts(Contacts *pCon)
-{
-	//通讯录初始化: 数组，usedsize
-	assert(pCon);
-	//pCon->usedsize = 0;
-	////这里memset()如果pCon->per的容量已确定即定义时直接定义为数组，才可以
-	//memset(pCon->per, 0,  sizeof(pCon->per));    //string.h 对数组初始化
-	pCon->capticty = DEFAULT_SIZE;
-	pCon->usedSize = 0;
-	pCon->per = (PersonInfo  *)malloc(sizeof(PersonInfo)*pCon->capticty);      // stdlib.h
-	assert(pCon->per != NULL);
-	memset(pCon->per, 0, sizeof(PersonInfo)*pCon->capticty);
-}
+
 //判断通讯录是否为满，返回值 0 ：表示增容失败；1 ：表示增容成功
 // 注：static 修饰的函数或变量，其作用域仅在当前 .c 文件内
 static int CheckFull(Contacts *pCon)
@@ -36,6 +24,46 @@ static int CheckFull(Contacts *pCon)
 	}
 	return 1;
 }
+
+// 加载
+void LoadContacts(Contacts *pCon)
+{
+	FILE *pf;
+	if (NULL == (pf = fopen("Contacts.bat", "rb")))
+	{
+		pf = fopen("Contacts.bat", "wb");
+		printf("welcome to use\n");
+	}
+	PersonInfo tmp = { 0 };
+	while (fread(&tmp, sizeof(PersonInfo), 1, pf) > 0)
+	{
+		CheckFull(pCon);
+		pCon->per[pCon->usedSize] = tmp;
+		pCon->usedSize++;
+	}
+	if (fclose(pf))
+	{
+		perror("close file");
+	}
+	pf = NULL;
+}
+
+void InitContacts(Contacts *pCon)
+{
+	//通讯录初始化: 数组，usedsize
+	assert(pCon);
+	//pCon->usedsize = 0;
+	////这里memset()如果pCon->per的容量已确定即定义时直接定义为数组，才可以
+	//memset(pCon->per, 0,  sizeof(pCon->per));    //string.h 对数组初始化
+	pCon->capticty = DEFAULT_SIZE;
+	pCon->usedSize = 0;
+	pCon->per = (PersonInfo  *)malloc(sizeof(PersonInfo)*pCon->capticty);      // stdlib.h
+	assert(pCon->per != NULL);
+	memset(pCon->per, 0, sizeof(PersonInfo)*pCon->capticty);
+	// 加载
+	LoadContacts(pCon);
+}
+
 // 添加一个人到通讯录
 void AddContacts(Contacts *pCon)
 {
@@ -127,9 +155,28 @@ void ClearContacts(Contacts *pCon)
 {
 	pCon->usedSize = 0;
 }
+
+// 保存
+void SaveContacts(Contacts *pCon)
+{
+	// 文件写。fwrite
+	FILE *pf = fopen("Contacts.bat", "wb");
+	assert(pf != NULL);
+	for (int i = 0; i < pCon->usedSize; i++)
+	{
+		fwrite(pCon->per + i, sizeof(PersonInfo), 1, pf);
+	}
+	if (fclose(pf))
+	{
+		perror("close file");
+	}
+	pf = NULL;
+}
+
 // 摧毁
 void DestroyContacts(Contacts *pCon)
 {
+	SaveContacts(pCon);
 	assert(pCon != NULL);
 	free(pCon->per);
 	pCon->per = NULL;

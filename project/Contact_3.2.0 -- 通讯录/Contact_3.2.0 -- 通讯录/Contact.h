@@ -37,11 +37,16 @@ typedef struct Contacts
 	int usedSize;    //被使用的个数
 	int capticty;//容量
 }Contacts;
+
+void LoadContacts(Contacts *pCon);		// 加载
 void InitContacts(Contacts *pCon);       // 初始化通讯录
 void AddContacts(Contacts *pCon);    //   添加一个人到通讯录
 int SearchContacts(Contacts *pCon);      // 根据姓名查找通讯录，找到：返回下标；找不到：返回-1
 void DelContacts(Contacts *pCon);    //   删除
 void ShowContacts(Contacts *pCon);       // 显示
 void ClearContacts(Contacts *pCon);      // 清空
+void SaveContacts(Contacts *pCon);		// 保存
 void DestroyContacts(Contacts *pCon);      // 摧毁
+
+
 #endif //__CONTACT_H__
